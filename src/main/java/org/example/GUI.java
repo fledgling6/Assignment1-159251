@@ -226,7 +226,6 @@ public class GUI implements ActionListener {
             case "Copy":manage.CopyText();break;
             case "Paste":manage.PasteText();break;
             case "SelectAll":manage.SelectAll();break;
-
         }
     }
 }
