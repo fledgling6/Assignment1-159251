@@ -1,9 +1,12 @@
 package org.example;
 
+import javax.swing.*;
+
 public class Function_Manage {
     GUI gui;
 
     public Function_Manage(GUI gui) {
+
         this.gui = gui;
     }
 

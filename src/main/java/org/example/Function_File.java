@@ -1,35 +1,22 @@
 package org.example;
 
-import com.itextpdf.text.Document;
-import com.itextpdf.text.Paragraph;
-import com.itextpdf.text.pdf.PdfWriter;
-
 import java.awt.*;
 import java.awt.print.PrinterException;
 import java.awt.print.PrinterJob;
 import java.io.*;
-import javax.swing.*;
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.PdfWriter;
 
-import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
-import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
-import org.fife.ui.rtextarea.RTextScrollPane;
-
+import java.io.FileOutputStream;
 public class Function_File {
-    RSyntaxTextArea textArea;
-    RTextScrollPane scrollPane;
-
     GUI gui;
     String fileName;
-    private File currentFile;
     String fileAddress;
     public Function_File(GUI gui) {
         this.gui=gui;
-        this.currentFile = null;
-    }
 
+    }
     public void newFile() {
         gui.textArea.setText("");
         gui.room.setTitle("New");
@@ -57,17 +44,7 @@ public class Function_File {
         }catch (Exception e){
             System.out.println("FILE IS NOT OPEN");
         }
-//
-//
     }
-    public String getFileName() {
-        if (currentFile != null) {
-            return currentFile.getName();
-        } else {
-            return "No file selected";
-        }
-    }
-
 
     public void SaveFile() {
         if(fileName==null){
