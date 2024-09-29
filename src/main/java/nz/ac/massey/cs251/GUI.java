@@ -1,6 +1,8 @@
-package org.example;
+package nz.ac.massey.cs251;
 
-import com.itextpdf.text.pdf.Barcode128;
+import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
+import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
+import org.fife.ui.rtextarea.RTextScrollPane;
 
 import javax.swing.*;
 import java.awt.*;
@@ -10,23 +12,23 @@ import java.awt.event.ActionListener;
 public class GUI implements ActionListener {
     JFrame room;
 
-    boolean wordWrapping=false;
+    boolean wordWrapping = false;
 
     //TEXT AREA
-    JTextArea textArea;
-    JScrollPane scrollPane;
+    RSyntaxTextArea textArea;
+    RTextScrollPane scrollPane;
 
     //TOP MENU BAR
     JMenuBar menuBar;
 
     //FILE MENU
-    JMenu menuFile,menuSearch,menuView,menuHelp,menuManage;
-    JMenuItem iNew,iNewWindow,iOpen,iSave,iSaveAs,iPrint,iExportAS,iExit;
+    JMenu menuFile, menuSearch, menuView, menuHelp, menuManage;
+    JMenuItem iNew, iNewWindow, iOpen, iSave, iSaveAs, iPrint, iExportAS, iExit;
 
     //VIew MENu
-    JMenuItem iZoomIn,iZoomOut,iResetZoom,iLineNumbers,iWordWrapping,iToggleTheme,iFontAndTheme,iTimeAndDate;
+    JMenuItem iZoomIn, iZoomOut, iResetZoom, iLineNumbers, iWordWrapping, iToggleTheme, iFontAndTheme, iTimeAndDate;
 
-    JMenuItem iCut,iCopy,iPaste,iSelectAll;
+    JMenuItem iCut, iCopy, iPaste, iSelectAll;
     Function_File file = new Function_File(this);
 
     Function_Search search = new Function_Search(this);
@@ -56,11 +58,28 @@ public class GUI implements ActionListener {
     }
 
     private void createTestArea() {
-        textArea = new JTextArea();
-        scrollPane = new JScrollPane(textArea,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        textArea = new RSyntaxTextArea();
+        textArea.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_JAVA);
+        scrollPane = new RTextScrollPane(textArea);
         scrollPane.setBorder(BorderFactory.createEmptyBorder());
         room.add(scrollPane, BorderLayout.CENTER);
+
+
     }
+    private void applySyntaxHighlighting() {
+        String fileName = file.getFileName();
+        if (fileName.endsWith(".java")) {
+            textArea.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_JAVA);
+        } else if (fileName.endsWith(".py")) {
+            textArea.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_PYTHON);
+        } else if (fileName.endsWith(".js")) {
+            textArea.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_JAVASCRIPT);
+        } else {
+            textArea.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_NONE);
+        }
+    }
+
+
 
     public void createMenubar() {
         menuBar = new JMenuBar();
@@ -199,7 +218,6 @@ public class GUI implements ActionListener {
         menuManage.add(iSelectAll);
 
     }
-
 
     @Override
     public void actionPerformed(ActionEvent e) {

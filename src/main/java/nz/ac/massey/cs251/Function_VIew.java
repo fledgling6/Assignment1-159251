@@ -1,4 +1,4 @@
-package org.example;
+package nz.ac.massey.cs251;
 
 import javax.swing.*;
 import java.awt.*;
