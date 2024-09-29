@@ -65,19 +65,6 @@ public class GUI implements ActionListener {
 
 
     }
-    private void applySyntaxHighlighting() {
-        String fileName = file.getFileName();
-        if (fileName.endsWith(".java")) {
-            textArea.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_JAVA);
-        } else if (fileName.endsWith(".py")) {
-            textArea.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_PYTHON);
-        } else if (fileName.endsWith(".js")) {
-            textArea.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_JAVASCRIPT);
-        } else {
-            textArea.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_NONE);
-        }
-    }
-
 
 
     public void createMenubar() {
