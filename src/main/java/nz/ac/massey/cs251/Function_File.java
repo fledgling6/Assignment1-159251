@@ -16,9 +16,6 @@ import org.fife.ui.rtextarea.RTextScrollPane;
 import org.odftoolkit.simple.TextDocument;
 
 public class Function_File {
-    // RSyntaxTextArea for syntax highlighting and RTextScrollPane for the scrollable text area
-    RSyntaxTextArea textArea;
-    RTextScrollPane scrollPane;
 
     // Reference to the GUI
     GUI gui;
