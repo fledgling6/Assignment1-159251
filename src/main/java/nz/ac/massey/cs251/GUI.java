@@ -3,11 +3,15 @@ package nz.ac.massey.cs251;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
 import org.fife.ui.rtextarea.RTextScrollPane;
+import org.yaml.snakeyaml.Yaml;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import org.yaml.snakeyaml.Yaml;
+import java.io.InputStream;
+import java.util.Map;
 
 public class GUI implements ActionListener {
     // Main window (JFrame) for the application
@@ -53,6 +57,9 @@ public class GUI implements ActionListener {
         createFileMenu();
         createVIewMenu();
         createManageMenu();
+        // Load and apply configuration
+        Map<String, Object> config = ConfigLoader.loadConfig();
+        applyConfiguration(config);
         // Make the main window visible
         room.setVisible(true);
     }
@@ -231,6 +238,41 @@ public class GUI implements ActionListener {
         iSelectAll.addActionListener(this);
         iSelectAll.setActionCommand("SelectAll");
         menuManage.add(iSelectAll);
+    }
+    public class ConfigLoader {
+        public static Map<String, Object> loadConfig() {
+            Yaml yaml = new Yaml();
+            InputStream inputStream = ConfigLoader.class.getClassLoader().getResourceAsStream("config.yaml");
+            if (inputStream == null) {
+                throw new RuntimeException("Unable to find config.yaml on the classpath.");
+            }
+            return (Map<String, Object>) yaml.load(inputStream);
+        }
+    }
+
+    private void applyConfiguration(Map<String, Object> config) {
+        Map<String, Object> editorConfig = (Map<String, Object>) config.get("editor");
+
+        // Apply font and font size
+        String fontName = (String) editorConfig.getOrDefault("font", "Monospaced");
+        int fontSize = (int) editorConfig.getOrDefault("fontSize", 12);
+        textArea.setFont(new Font(fontName, Font.PLAIN, fontSize));
+
+        // Apply theme
+        String theme = (String) editorConfig.getOrDefault("theme", "Light");
+        if ("Dark".equals(theme)) {
+            textArea.setBackground(Color.DARK_GRAY);
+            textArea.setForeground(Color.WHITE);
+        } else {
+            textArea.setBackground(Color.WHITE);
+            textArea.setForeground(Color.BLACK);
+        }
+
+        // Apply word wrapping
+        boolean wordWrapping = (boolean) editorConfig.getOrDefault("wordWrapping", false);
+        this.wordWrapping = wordWrapping;
+        textArea.setLineWrap(wordWrapping);
+        textArea.setWrapStyleWord(wordWrapping);
     }
 
     @Override
