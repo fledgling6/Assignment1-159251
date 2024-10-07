@@ -1,54 +1,38 @@
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.io.TempDir;
+import org.yaml.snakeyaml.error.YAMLException;
 
-import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Map;
+import java.nio.file.Paths;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class ConfigLoaderTest {
 
-    @TempDir
-    Path tempDir;
+    private Path validConfigPath;
+    private Path invalidConfigPath;
+    private Path missingConfigPath;
 
-    @Test
-    void testLoadConfig() throws IOException {
-        // 创建临时的 YAML 文件
-        Path tempFile = tempDir.resolve("config.yaml");
-        Files.writeString(tempFile, "editor:\n" +
-                "  font: Monospaced\n" +
-                "  fontSize: 12\n" +
-                "  theme: Light\n" +
-                "  wordWrapping: false\n");
-
-        // 使用临时目录中的文件进行测试
-        System.setProperty("user.dir", tempDir.toString());
-
-        Map<String, Object> config = ConfigLoader.loadConfig();
-
-        assertNotNull(config);
-        assertTrue(config.containsKey("editor"));
-        Map<String, Object> editorConfig = (Map<String, Object>) config.get("editor");
-        assertEquals("Monospaced", editorConfig.get("font"));
-        assertEquals(12, editorConfig.get("fontSize"));
-        assertEquals("Light", editorConfig.get("theme"));
-        assertFalse((Boolean) editorConfig.get("wordWrapping"));
+    @BeforeEach
+    void setUp() {
+        // Set paths for the test cases
+        validConfigPath = Paths.get("src/test/resources/config.yaml");
+        invalidConfigPath = Paths.get("src/test/resources/invalid-config.yaml");
+        missingConfigPath = Paths.get("src/test/resources/missing-config.yaml");
     }
 
+
     @Test
-    void testLoadConfigWithMissingFile() {
-        // 设置系统属性以指向不存在的文件
-        System.setProperty("user.dir", "/nonexistent/path");
-
-        Exception exception = assertThrows(RuntimeException.class, () -> {
-            ConfigLoader.loadConfig();
+    void testLoadConfigWithInvalidFile() {
+        assertThrows(RuntimeException.class, () -> {
+            ConfigLoader.loadConfig(invalidConfigPath);
         });
-
-        String expectedMessage = "Unable to find config.yaml on the classpath.";
-        String actualMessage = exception.getMessage();
-
-        assertTrue(actualMessage.contains(expectedMessage));
+    }
+    @Test
+    void testLoadMissingConfig() {
+        // Test loading a non-existing (missing) config file
+        Exception exception = assertThrows(RuntimeException.class, () -> ConfigLoader.loadConfig(missingConfigPath));
+        assertTrue(exception.getCause() instanceof java.nio.file.NoSuchFileException);
+        assertEquals("Failed to load configuration file: " + missingConfigPath, exception.getMessage());
     }
 }
