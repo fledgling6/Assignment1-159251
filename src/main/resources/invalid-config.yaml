@@ -1,0 +1,6 @@
+# invalid YAML 格式
+editor:
+  font: Monospaced
+  fontSize: 12
+  theme: Light
+  wordWrapping: true

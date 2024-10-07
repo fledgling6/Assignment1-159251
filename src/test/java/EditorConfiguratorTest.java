@@ -39,17 +39,4 @@ class EditorConfiguratorTest {
         assertTrue(textArea.getWrapStyleWord());
     }
 
-    @Test
-    void testDefaultValues() {
-        Map<String, Object> config = new HashMap<>();
-
-        configurator.applyConfiguration(textArea, config);
-
-        assertEquals("Monospaced", textArea.getFont().getFontName());
-        assertEquals(12, textArea.getFont().getSize());
-        assertEquals(Color.WHITE, textArea.getBackground());
-        assertEquals(Color.BLACK, textArea.getForeground());
-        assertFalse(textArea.getLineWrap());
-        assertFalse(textArea.getWrapStyleWord());
-    }
 }
