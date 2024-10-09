@@ -12,7 +12,7 @@ RUN apt-get update && \
     && rm -rf /var/lib/apt/lists/*
 
 # Add app.jar to the image
-ADD target/hampad-1.0-SNAPSHOT-jar-with-dependencies.jar /app.jar
+ADD libs/Sample_Nodepad-1.0-SNAPSHOT-jar-with-dependencies.jar /app.jar
 
 # Set DISPLAY environment variable
 ENV DISPLAY=:0
